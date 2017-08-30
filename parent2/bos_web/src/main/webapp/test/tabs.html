@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>tabs</title>
+    <!--导入jquery核心类库-->
+    <script type="text/javascript" src="../js/jquery-1.8.3.js" > </script>
+    <!--导入easyui类库-->
+    <script type="text/javascript" src="../js/easyui/jquery.easyui.min.js" ></script>
+    <!--导入国际化文件-->
+    <script type="text/javascript" src="../js/easyui/locale/easyui-lang-zh_CN.js" > </script>
+    <!--导入默认主题css文件-->
+    <link id="eaysuiTheme" rel="stylesheet" type="text/css" href="../js/easyui/themes/icon.css" />
+    <!--导入icon css文件-->
+    <link rel="stylesheet" type="text/css" href="../js/easyui/themes/default/easyui.css" />
+
+
+    <script>
+        $(function () {
+            $("#st1").click(function () {
+                var tab = $("#center_tab").tabs('exists','使徒一号的tabs');
+                if(tab){
+                    $("#center_tab").tabs('select','使徒一号的tabs');
+                }else{
+                    $("#center_tab").tabs('add',{
+                        title:'使徒一号的tabs',
+                        content:'使徒一号的内容',
+                        closable:true,
+                        tools:[{
+                            iconCls:'icon-reload',
+                            handler:function () {
+                                alert('refresh');
+                            }
+                        }]
+                    })
+                }
+            });
+            $("#st2").click(function () {
+                var tab = $("#center_tab").tabs('exists','使徒二号的tabs');
+                if(tab){
+                    $("#center_tab").tabs('select','使徒二号的tabs');
+                }else{
+                    $("#center_tab").tabs('add',{
+                        title:'使徒二号的tabs',
+                        content:'使徒二号的内容',
+                        closable:true,
+                        tools:[{
+                            iconCls:'icon-reload',
+                            handler:function () {
+                                alert('refresh');
+                            }
+                        }]
+                    })
+                }
+            })
+        })
+    </script>
+</head>
+<body class="easyui-layout">
+    <div data-options="title:'北部',region:'north'" style="height:200px" ></div>
+    <div data-options="title:'西部',region:'west'" style="width:200px" >
+        <div class="easyui-accordion" data-options="fit:true">
+            <div data-options="title:'第一使徒'" >
+                <a href="javascript:void(0)" id="st1" > 使徒一号</a>
+            </div>
+            <div data-options="title:'第二使徒'" >
+                <a class="easyui-linkbutton" id="st2"> 使徒二号</a>
+            </div>
+            <div data-options="title:'第三使徒'" >
+                <a class="easyui-linkbutton" id="st3"> 使徒三号</a>
+            </div>
+            <div data-options="title:'第十八使徒'" >
+                <a class="easyui-linkbutton" id="st18"> 使徒四号</a>
+            </div>
+        </div>
+    </div>
+    <div data-options="title:'中部',region:'center'" >
+        <div id="center_tab" class="easyui-tabs" data-options="fit:true">
+            <div title="tab1" data-options="closable:true" >tab1的内容</div>
+            <div title="tab2" data-options="closable:true" >tab2的内容</div>
+        </div>
+    </div>
+    <div data-options="title:'东部',region:'east'" style="width:200px" ></div>
+    <div data-options="title:'南部',region:'south'" style="height:200px" ></div>
+</body>
+</html>

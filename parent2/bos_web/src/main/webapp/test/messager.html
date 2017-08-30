@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>messager</title>
+    <!--导入jquery核心类库-->
+    <script type="text/javascript" src="../js/jquery-1.8.3.js" > </script>
+    <!--导入easyui类库-->
+    <script type="text/javascript" src="../js/easyui/jquery.easyui.min.js" ></script>
+    <!--导入国际化文件-->
+    <script type="text/javascript" src="../js/easyui/locale/easyui-lang-zh_CN.js" > </script>
+    <!--导入默认主题css文件-->
+    <link id="eaysuiTheme" rel="stylesheet" type="text/css" href="../js/easyui/themes/icon.css" />
+    <!--导入icon css文件-->
+    <link rel="stylesheet" type="text/css" href="../js/easyui/themes/default/easyui.css" />
+
+    <script>
+        $(function () {
+            $("#alert").click(function () {
+                $.messager.alert('alert',"报警啦","warning");
+            })
+            $("#confirm").click(function () {
+                $.messager.confirm('confirm',"确认一下");
+            });
+            $.messager.show({
+                title:"这里是title",
+                msg:"this is message",
+                timeout:3000,
+                showType:'slide'
+            });
+            $("#jump").click(function () {
+                $("#myWindow").window("open");
+            })
+
+        })
+
+    </script>
+
+</head>
+<body>
+    <button id="alert">alert</button>
+    <button id="confirm">confirm</button>
+    <button id="jump">弹出窗口</button>
+
+    <!--弹窗模块
+        先将窗口设置为关闭状态 closed：true；
+        然后再给按钮设置绑定事件，将指定的div的窗口打开
+    -->
+    <div title="这里是弹窗" id="myWindow"
+         class="easyui-window" data-options="closed:true,collapsible:false,modal:true"
+         style="width: 400px;height:300px">
+    </div>
+</body>
+</html>

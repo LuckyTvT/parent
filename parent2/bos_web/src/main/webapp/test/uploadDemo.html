@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" src="../js/jquery-1.8.3.js" ></script>
+    <script type="text/javascript" src="../js/jquery.ocupload-1.1.2.js" ></script>
+    <script >
+        $(function () {
+            $("#uploadBTN").upload({
+//                请求的地址
+                action:'ass.action',
+//                上传的文件名
+                name:'fileName'
+            })
+        })
+
+    </script>
+</head>
+<body>
+<!--ocupload实现原理，通过一个iframe内联标签，将需要刷新页面的动作移植到iframe标签中
+    从而使用户当前页面不需要刷新。
+-->
+<iframe name="myframe" style="display: none"> </iframe>
+<!--涉及到二进制文件上传需要修改参数 enctype：multipart/form-data-->
+<form target="myframe" method="post" action="xxx.action" enctype="multipart/form-data">
+    <input type="file">
+    <button>普通上传</button>
+</form>
+
+
+<!--ocupload文件上传-->
+<button id="uploadBTN">js组件上传按钮</button>
+
+<!--在action中接收只需要-->
+
+</body>
+</html>

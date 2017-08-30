@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xmlns:jaxws="http://cxf.apache.org/jaxws"
+       xsi:schemaLocation="
+	   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	   http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+	   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+	   http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
+	   http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+	   http://www.springframework.org/schema/data/jpa
+	   http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
+       http://cxf.apache.org/jaxws
+	   http://cxf.apache.org/schemas/jaxws.xsd">
+
+
+    <!--配置oracle数据源（连接池）-->
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+        <property name="driverClass" value="oracle.jdbc.driver.OracleDriver" />
+        <property name="jdbcUrl" value="jdbc:oracle:thin:@192.168.43.128:1521:ORCL" />
+        <property name="user" value="scott" />
+        <property name="password" value="tiger" />
+    </bean>
+
+    <!--配置mysql数据源-->
+    <!--<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" >-->
+        <!--<property name="driverClass" value="com.mysql.jdbc.Driver" />-->
+        <!--<property name="jdbcUrl" value="jdbc:mysql:///test" />-->
+        <!--<property name="user" value="root" />-->
+        <!--<property name="password" value="root" />-->
+    <!--</bean>-->
+
+    <!--配置工厂-->
+    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean" >
+        <!--配置数据源-->
+        <property name="dataSource" ref="dataSource" />
+        <!--指定持久层提供者为hibernate  ejb-->
+        <property name="persistenceProvider">
+            <bean class="org.hibernate.ejb.HibernatePersistence" />
+        </property>
+        <!---->
+        <property name="jpaDialect">
+            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaDialect" />
+        </property>
+        <!--打开包扫描-->
+        <property name="packagesToScan" value="com.itheima.bos.domain" />
+        <!--配置jpa的一些属性，相当于配置hibernateproperties-->
+        <property name="jpaVendorAdapter" >
+            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+                <!--是否显示sql语句-->
+                <property name="showSql" value="true" />
+                <!--配置方言  oracle方言-->
+                <property name="databasePlatform" value="org.hibernate.dialect.Oracle10gDialect" />
+                <!--选择数据库类型-->
+                <property name="database" value="ORACLE" />
+                <!--自动建表-->
+                <property name="generateDdl" value="true" />
+            </bean>
+
+        </property>
+        
+    </bean>
+
+    <!--打开注解扫描-->
+    <context:component-scan base-package="com.itheima.bos.service,com.itheima.bos.service.server,com.itheima.bos.dao" />
+
+    <!--配置事务管理器-->
+    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager" >
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+
+    <!--事务注解支持-->
+    <tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true"/>
+
+    <!--整合springdata jpa-->
+    <jpa:repositories base-package="com.itheima.bos.dao" />
+
+    <jaxws:client id="server" serviceClass="com.itheima.bos.service.server.CrmService"
+                  address="http://localhost:8082/ws/service?wsdl" />
+
+
+    <bean id="orderService" class="com.itheima.bos.service.impl.OrderServiceImpl" />
+    <jaxws:server address="/order">
+        <jaxws:serviceBean>
+            <ref bean="orderService" />
+        </jaxws:serviceBean>
+    </jaxws:server>
+
+    <!--配置shiro框架-->
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <!--配置安全管理器，shiro最重要的部分-->
+        <property name="securityManager" ref="securityManager" />
+        <!--未认证的情况访问系统资源，会跳转到-->
+        <property name="loginUrl" value="/login.html"/>
+        <!--未授权的情况访问系统资源，会跳转到-->
+        <property name="unauthorizedUrl" value="/error.html" />
+        <!--过滤器链-->
+        <property name="filterChainDefinitions">
+            <value>
+                /login.html = anon
+                /error.html = anon
+                /validatecode.jsp=anon
+                /bos_login.action=anon
+                /pages/base/courier.html = perms["courier"]
+                /**/** = authc
+            </value>
+        </property>
+    </bean>
+
+
+    <!--配置安全管理器-->
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <property name="realm" ref="bosRealm" />
+    </bean>
+
+    <!--配置realm-->
+    <bean id="bosRealm" class="com.itheima.bos.realm.BosRealm" />
+
+
+
+
+    <!-- 第二种权限控制方式：注解方式（底层基于代理技术实现的） -->
+    <!-- 自动代理 -->
+    <bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator">
+        <!-- 强制使用cglib方式创建代理对象 -->
+        <property name="proxyTargetClass" value="true"/>
+    </bean>
+    <!-- 切面 -->
+    <bean id="authorizationAttributeSourceAdvisor"
+          class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+        <property name="securityManager" ref="securityManager"/>
+    </bean>
+
+
+
+
+
+
+
+</beans>
+

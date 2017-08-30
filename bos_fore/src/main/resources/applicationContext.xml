@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xmlns:jaxws="http://cxf.apache.org/jaxws"
+       xsi:schemaLocation="
+	   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	   http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+	   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+	   http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
+	   http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+	   http://www.springframework.org/schema/data/jpa
+	   http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
+	   http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
+
+    <context:component-scan base-package="com.itheima" />
+
+    <!--调用远程短信发送服务，所以这里配置客户端-->
+    <jaxws:client id="message" serviceClass=""
+                  address="" />
+
+    <jaxws:client id="server" serviceClass="com.itheima.fore_service.server.CrmService"
+                  address="http://localhost:8082/ws/service?wsdl" />
+
+    <jaxws:client id="order" serviceClass="com.itheima.orderService.OrderService"
+                  address="http://localhost:8080/ws/order?wsdl" />
+
+    <!--配置shiro相关-->
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <!--配置shiro管理器 shiro框架核心-->
+        <property name="securityManager" ref="securityManager" />
+        <!--未认证下跳转去向-->
+        <property name="loginUrl" value="/login.html"/>
+        <!--未授权访问系统资源跳转到-->
+        <property name="unauthorizedUrl" value="/error.html" />
+        <!--过滤器链-->
+        <!--anon 未登录也可以访问的资源-->
+        <!--authc 需要登录才能访问的资源-->
+        <property name="filterChainDefinitions">
+            <value>
+                /error.html = anon
+                /* = authc
+            </value>
+        </property>
+    </bean>
+
+
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <property name="realm" ref="realm"/>
+    </bean>
+
+    <bean id="realm" class="com.itheima.realm.ForeRealm" />
+
+</beans>

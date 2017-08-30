@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="bos_dao" />
+        <module name="bos_domain" />
+        <module name="bos_fore" />
+        <module name="bos_service" />
+        <module name="bos_utils" />
+        <module name="bos_web" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="bos_app" target="1.5" />
+      <module name="bos_dao" target="1.7" />
+      <module name="bos_domain" target="1.7" />
+      <module name="bos_fore" target="1.7" />
+      <module name="bos_service" target="1.7" />
+      <module name="bos_utils" target="1.7" />
+      <module name="bos_web" target="1.7" />
+      <module name="CXFDemo" target="1.7" />
+      <module name="demo" target="1.7" />
+      <module name="parent1" target="1.5" />
+      <module name="parent2" target="1.5" />
+    </bytecodeTargetLevel>
+  </component>
+</project>
