@@ -129,6 +129,24 @@ public class CourierAction extends BaseAction<Courier> {
     }
 
 
+    @Action("edit")
+    public void edit(){
+        HashMap<String, Object> map = new HashMap<>();
+        try{
+            service.edit();
+            map.put("success",true);
+            toJSON(map);
+        }catch (UnauthorizedException e){
+            map.put("success",false);
+            map.put("message","权限不足");
+            toJSON(map);
+        }catch(Exception e1){
+            map.put("success",false);
+            map.put("message","操作失败");
+            toJSON(map);
+        }
+
+    }
 
 
 }

@@ -87,6 +87,7 @@ public class BaseAction<T> extends ActionSupport implements ModelDriven<T> {
                 }
                 return true;
             }
+//            打开循环引用检测
         }, DisableCircularReferenceDetect);
         try {
             HttpServletResponse response = ServletActionContext.getResponse();

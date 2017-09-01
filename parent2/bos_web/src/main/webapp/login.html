@@ -23,6 +23,7 @@
 				});
 			});
 		</script>
+
 	</head>
 	
 	<body>
@@ -77,32 +78,46 @@
 							</div>
 						</div>
 						<div class="col-md-offset-3 col-md-8">
-							<a id="login" name="loginform:j_id19"
+							<a id="login" name="loginform:j_id19" onclick="login()"
 								 class="btn btn-danger">立即登录</a>
 							
 						</div>
 					</form>
 					<script>
-						$(function () {
-						    $("#login").click(function () {
-                                $.ajax({
-                                    url:'/bos_login.action',
-                                    type:'post',
-                                    data:$("#loginform").serialize(),
-                                    success:function (data) {
-                                        if(!data.success){
-                                            $("#checkCode").prop("value","");
-                                            $("#code").prop("src","validatecode.jsp?"+Math.random());
-                                            $("#message").html(data.message);
-                                        }else{
-                                            location.href="index.html";
-										}
-                                    }
-                                })
-                            })
+                        document.onkeydown=keyDownSearch;
 
-                        })
+                        function keyDownSearch(e) {
+                            // 兼容FF和IE和Opera
+                            var theEvent = e || window.event;
+                            var code = theEvent.keyCode || theEvent.which || theEvent.charCode;
+                            if (code == 13) {
+                                login();//具体处理函数
+                                return false;
+                            }
+                            return true;
+                        }
+
+                        function login() {
+//              ajax提交表格数据
+                            $.ajax({
+                                url:'/bos_login.action',
+                                type:'post',
+                                data:$("#loginform").serialize(),
+                                success:function (data) {
+
+                                    if(!data.success){
+                                        $("#checkCode").prop("value","");
+                                        $("#code").prop("src","validatecode.jsp?"+Math.random());
+                                        $("#message").html(data.message);
+                                    }else{
+                                        location.href="index.html";
+                                    }
+                                }
+                            })
+                        }
 					</script>
+
+
 				</div>
 			</div>
 		</section>

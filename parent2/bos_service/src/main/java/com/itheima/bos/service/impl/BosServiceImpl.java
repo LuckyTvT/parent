@@ -74,35 +74,43 @@ public class BosServiceImpl implements BosService {
         return list;
     }
 
+    @RequiresPermissions("save")
     @Override
     public void courierSave(Courier courier) {
         courier.setDeltag('0');
         courierDao.save(courier);
     }
 
-    @RequiresPermissions("del")
+    @RequiresPermissions("delete")
     @Override
     public void delCourier(String ds) {
+
         String[] split = ds.split(",");
         for (String s : split) {
             int i = Integer.parseInt(s);
             courierDao.del(i);
         }
+
     }
 
+    @RequiresPermissions("delete")
     @Override
     public void reNewCourier(String ds) {
+
         String[] split = ds.split(",");
         for (String s : split) {
             int i = Integer.parseInt(s);
             courierDao.reNew(i);
         }
+
     }
+
 
     @Override
     public Page findByCondition(Specification<Courier> specification, Pageable pageable) {
         return courierDao.findAll(specification,pageable);
     }
+
 
     @Override
     public List<Courier> findByDeltag() {
@@ -110,10 +118,17 @@ public class BosServiceImpl implements BosService {
         return list;
     }
 
+
     @Override
     public List<Standard> findByQ(String q) {
         List<Standard> list = standardDao.findByNameLike("%"+q+"%");
         return list;
+    }
+
+    @RequiresPermissions("update")
+    @Override
+    public void edit() {
+
     }
 
 

@@ -3,15 +3,7 @@ package com.itheima.bos.domain.system;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * @description:菜单
@@ -35,12 +27,20 @@ public class Menu {
 	@ManyToMany(mappedBy = "menus")
 	private Set<Role> roles = new HashSet<Role>(0);
 
-	@OneToMany(mappedBy = "parentMenu")
+	@OneToMany(mappedBy = "parentMenu",fetch= FetchType.EAGER)
 	private Set<Menu> childrenMenus = new HashSet<Menu>();
 
 	@ManyToOne
 	@JoinColumn(name = "C_PID")
 	private Menu parentMenu;
+
+	public String getText(){
+		return name;
+	}
+
+	public Set<Menu> getChildren(){
+		return childrenMenus;
+	}
 
 	public Integer getId() {
 		return id;

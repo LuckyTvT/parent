@@ -30,4 +30,6 @@ public interface BosService {
     List<Courier> findByDeltag();
 
     List<Standard> findByQ(String q);
+
+    void edit();
 }

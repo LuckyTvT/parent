@@ -32,6 +32,7 @@ public class LoginAction extends BaseAction<User> {
     public void bos_login(){
         String code = (String) ServletActionContext.getRequest().getSession().getAttribute("validateCode");
         HashMap<String, Object> map = new HashMap<>();
+        System.out.println("code:"+code+"   checkCode:"+checkCode);
         if(!code.equalsIgnoreCase(checkCode)){
 //            返回验证码错误提示
             map.put("success",false);

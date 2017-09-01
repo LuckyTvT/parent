@@ -23,61 +23,83 @@
 			}
 			
 			function doEdit(){
-				var datas = $("#grid").datagrid('getSelections');
-				if(datas.length==1){
-                    $('#addWindow').window("open");
-                    $('#courierForm').form("load",datas[0]);
+                var datas = $("#grid").datagrid('getSelections');
+                $.ajax({
+                    url:'/edit.action',
+                    success:function (data) {
+                        if(data.success){
+                            if(datas.length==1){
+                                $('#addWindow').window("open");
+                                $('#courierForm').form("load",datas[0]);
 //                    单独设置combobox中的值
-                    $("#standard").combobox("select",datas[0].standard.id);
-				}else{
-				    $.messager.alert("提示","请选择一条数据","warning");
-				}
+                                $("#standard").combobox("select",datas[0].standard.id);
+                            }else{
+                                $.messager.alert("提示","请选择一条数据","warning");
+                            }
+
+                        }else{
+                            $.messager.alert("提示",data.message);
+                        }
+                    }
+                });
+
+
 			}
 			
 			function doDelete(){
 				var datas = $("#grid").datagrid('getSelections');
-				var ds = new Array();
-                for (var i = 0; i < datas.length; i++) {
-                    ds.push(datas[i].id);
-                }
-//              将数组转成字符串，参数为中间分隔标志
-                ds = ds.join(",");
-                $.ajax({
-					url:'/delCourier.action',
-					data:{"ds":ds},
-//					async:true,
-					type:'post',
-					dataType:'json',
-					success:function (data) {
-					    if(data.success){
-                        	$("#grid").datagrid('reload');
-							$.messager.alert("提示","已废除");
-						}else{
-                            $.messager.alert("提示",data.message);
-						}
+                if(datas.length>=1) {
+                    var ds = new Array();
+                    for (var i = 0; i < datas.length; i++) {
+                        ds.push(datas[i].id);
                     }
-				})
+//              	将数组转成字符串，参数为中间分隔标志
+                    ds = ds.join(",");
+                    $.ajax({
+                        url:'/delCourier.action',
+                        data:{"ds":ds},
+//					async:true,
+                        type:'post',
+                        dataType:'json',
+                        success:function (data) {
+                            if(data.success){
+                                $("#grid").datagrid('reload');
+                                $.messager.alert("提示","已废除");
+                            }else{
+                                $.messager.alert("提示",data.message);
+                            }
+                        }
+                    })
+                }else{
+                    $.messager.alert("提示","请至少选择一条数据","warning");
+                }
+
+
 			}
 			
 			function doRestore(){
                 var datas = $("#grid").datagrid('getSelections');
-                var ds = new Array();
-                for (var i = 0; i < datas.length; i++) {
-                    ds.push(datas[i].id);
-                }
-//              将数组转成字符串，参数为中间分隔标志
-                ds = ds.join(",");
-                $.ajax({
-                    url:'/reNewCourier.action',
-                    data:{"ds":ds},
-//					async:true,
-                    type:'post',
-                    dataType:'json',
-                    success:function (data) {
-                        $("#grid").datagrid('reload');
-                        $.messager.alert("提示","已恢复");
+                if(datas.length>=1){
+                    var ds = new Array();
+                    for (var i = 0; i < datas.length; i++) {
+                        ds.push(datas[i].id);
                     }
-                })
+//              	将数组转成字符串，参数为中间分隔标志
+                    ds = ds.join(",");
+                    $.ajax({
+                        url:'/reNewCourier.action',
+                        data:{"ds":ds},
+                        type:'post',
+                        dataType:'json',
+                        success:function (data) {
+                            $("#grid").datagrid('reload');
+                            $.messager.alert("提示","已恢复");
+                        }
+                    })
+				}else{
+                    $.messager.alert("提示","请至少选择一条数据","warning");
+                }
+
 			}
 			
 			function doSearch() {

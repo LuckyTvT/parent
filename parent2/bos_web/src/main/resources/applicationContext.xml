@@ -107,7 +107,8 @@
                 /error.html = anon
                 /validatecode.jsp=anon
                 /bos_login.action=anon
-                /pages/base/courier.html = perms["courier"]
+                /pages/base/courier.html = perms["find"]
+                /pages/base/area.html = perms["find"]
                 /**/** = authc
             </value>
         </property>

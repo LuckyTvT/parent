@@ -4,9 +4,9 @@
     <root id="1"/>
     <schema id="2" parent="1" name="SCOTT">
       <ObjectId>54</ObjectId>
-      <IntrospectionTimestamp>2017-08-29.20:22:50</IntrospectionTimestamp>
+      <IntrospectionTimestamp>2017-08-31.11:43:24</IntrospectionTimestamp>
       <CreatedTimestamp>2005-08-30.15:06:10</CreatedTimestamp>
-      <ModifiedTimestamp>2017-08-29.19:43:59</ModifiedTimestamp>
+      <ModifiedTimestamp>2017-08-31.11:42:51</ModifiedTimestamp>
       <Current>1</Current>
       <Visible>1</Visible>
     </schema>
@@ -99,8 +99,8 @@
     </schema>
     <sequence id="32" parent="2" name="HIBERNATE_SEQUENCE">
       <ObjectId>52700</ObjectId>
-      <CreatedTimestamp>2017-08-17.17:56:20</CreatedTimestamp>
-      <ModifiedTimestamp>2017-08-17.17:56:20</ModifiedTimestamp>
+      <CreatedTimestamp>2017-08-31.11:42:51</CreatedTimestamp>
+      <ModifiedTimestamp>2017-08-31.11:42:51</ModifiedTimestamp>
       <SequenceIdentity>1</SequenceIdentity>
     </sequence>
     <table id="33" parent="2" name="BONUS">
